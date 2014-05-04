@@ -1,9 +1,13 @@
 {
   "name": "pi-alarm",
-  "version": 0,
+  "version": "0.0.0",
   "author": {
     "name": "Rodrigo Basoalto",
     "url": "http://www.basoalto.cl"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/rbasoalto/pi-alarm"
   },
   "dependencies": {
     "pi-gpio": ">=0.0.5"
