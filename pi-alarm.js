@@ -21,6 +21,7 @@ var doPollingReq = function() {
     method: 'GET'
   };
   var pollingReq = http.request(pollingReqOpts, function(res) {
+    console.log('Request being created...');
     res.on('data', function(data) {
       console.log('Got data: '+data);
       var objData = JSON.parse(data);
@@ -33,8 +34,9 @@ var doPollingReq = function() {
       }
     });
     res.on('close', doPollingReq);
-    res.on('finish', doPollingReq);
+    res.on('end', doPollingReq);
   });
+  pollingReq.end();
 };
 
 setImmediate(doPollingReq);
