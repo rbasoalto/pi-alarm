@@ -10,6 +10,10 @@ var actuator = function(outputValue) {
       gpio.close(11);
     });
   });
+  if (outputValue) {
+    // Turn off after 5sec
+    setTimeout(actuator, proces.env.DELAY || 5000, false);
+  }
 };
 
 var doPollingReq = function() {
@@ -31,6 +35,7 @@ var doPollingReq = function() {
     });
     res.on('close', doPollingReq);
     res.on('end', doPollingReq);
+    res.on('error', doPollingReq);
   });
   pollingReq.end();
 };
