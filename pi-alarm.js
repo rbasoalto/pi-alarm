@@ -15,8 +15,8 @@ var actuator = function(outputValue) {
 var doPollingReq = function() {
   console.log('Starting request...');
   var pollingReqOpts = {
-    host: 'localhost',
-    port: 3000,
+    host: process.env.SERVER_HOSTNAME || 'localhost',
+    port: process.env.SERVER_PORT || 3000,
     path: '/alarm',
     method: 'GET'
   };
@@ -25,12 +25,8 @@ var doPollingReq = function() {
     res.on('data', function(data) {
       console.log('Got data: '+data);
       var objData = JSON.parse(data);
-      if (objData) {
-        if (objData.value == true) {
-          actuator(true);
-        } else if (objData.value == false) {
-          actuator(false);
-        }
+      if (objData && objData.value !== undefined) {
+        actuator(objData.value);
       }
     });
     res.on('close', doPollingReq);
