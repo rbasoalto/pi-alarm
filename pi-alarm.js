@@ -12,7 +12,7 @@ var actuator = function(outputValue) {
   });
   if (outputValue) {
     // Turn off after 5sec
-    setTimeout(actuator, proces.env.DELAY || 5000, false);
+    setTimeout(actuator, process.env.DELAY || 5000, false);
   }
 };
 
