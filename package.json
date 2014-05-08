@@ -10,7 +10,8 @@
     "url": "http://github.com/rbasoalto/pi-alarm"
   },
   "dependencies": {
-    "pi-gpio": ">=0.0.5"
+    "pi-gpio": ">=0.0.5",
+    "mqtt": "*"
   },
   "engines": {
     "node": "*"
