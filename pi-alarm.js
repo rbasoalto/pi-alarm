@@ -23,10 +23,18 @@ if (process.argv.length > 2) {
   }
 }
 
+// Add will to mqttClientOpts for offline reporting
+config['mqttClientOpts']['will'] = {
+  topic: config['mqttStateTopic'],
+  payload: JSON.stringify({currentState: 'offline'}),
+  qos: 1,
+  retain: true
+};
+
 var mqttClient = mqtt.createClient(config['mqttPort'], config['mqttHost'], config['mqttClientOpts']);
 
 var publishState = function() {
-  mqttClient.publish(config['mqttStateTopic'], JSON.stringify({currentState: currentState}), {qos: 1, retain: true});
+  mqttClient.publish(config['mqttStateTopic'], JSON.stringify({currentState: currentState?'on':'off'}), {qos: 1, retain: true});
 };
 
 var updateState = function(newState) {
