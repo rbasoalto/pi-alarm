@@ -1,4 +1,4 @@
-var http = require('http');
+var https = require('https');
 var gpio = require('pi-gpio');
 var currentState = false;
 
@@ -20,11 +20,11 @@ var doPollingReq = function() {
   console.log('Starting request...');
   var pollingReqOpts = {
     host: process.env.SERVER_HOSTNAME || 'localhost',
-    port: process.env.SERVER_PORT || 3000,
+    port: process.env.SERVER_PORT || 443,
     path: '/alarm',
     method: 'GET'
   };
-  var pollingReq = http.request(pollingReqOpts, function(res) {
+  var pollingReq = https.request(pollingReqOpts, function(res) {
     console.log('Request being created...');
     res.on('data', function(data) {
       console.log('Got data: '+data);
