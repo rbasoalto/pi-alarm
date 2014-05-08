@@ -1,6 +1,7 @@
 var https = require('https');
 var gpio = require('pi-gpio');
 var currentState = false;
+var turnoffTask = null;
 
 var actuator = function(outputValue) {
   console.log('Switching relay: '+outputValue);
@@ -12,7 +13,16 @@ var actuator = function(outputValue) {
   });
   if (outputValue) {
     // Turn off after 5sec
-    setTimeout(actuator, process.env.DELAY || 10000, false);
+    if (turnoffTask != null) {
+      clearTimeout(turnoffTask);
+    }
+    turnoffTask = setTimeout(actuator, process.env.DELAY || 10000, false);
+  } else {
+    // Now turning off, cancel the timeout if present
+    if (turnoffTask != null) {
+      clearTimeout(turnoffTask);
+    }
+    turnoffTask = null;
   }
 };
 
