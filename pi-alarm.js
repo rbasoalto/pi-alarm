@@ -42,20 +42,23 @@ var updateState = function(newState) {
   publishState();
 };
 
-var actuator = function(outputValue) {
-  console.log('Switching relay: '+outputValue);
+var actuator = function(data) {
+  if (data.value === undefined) {
+    return;
+  }
+  console.log('Switching relay: '+data.value);
   gpio.open(11, "output", function(err) {
-    gpio.write(11, outputValue, function(err) {
-      updateState(outputValue);
+    gpio.write(11, data.value, function(err) {
+      updateState(data.value);
       gpio.close(11);
     });
   });
-  if (outputValue) {
+  if (data.value) {
     // Schedule turnoffTask, cancelling the previous task if exists
     if (turnoffTask != null) {
       clearTimeout(turnoffTask);
     }
-    turnoffTask = setTimeout(actuator, config['turnOffDelay'], false);
+    turnoffTask = setTimeout(actuator, data.delay || config['turnOffDelay'], {value: false});
   } else {
     // If turning off, cancel the outstanding turnoffTask
     if (turnoffTask != null) {
@@ -72,6 +75,6 @@ mqttClient
   .on('message', function(topic, message) {
     if (topic == config['mqttCommandsTopic']) {
       data = JSON.parse(message);
-      actuator(data.value);
+      actuator(data);
     }
   });
