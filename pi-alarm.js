@@ -58,7 +58,7 @@ var actuator = function(data) {
     if (turnoffTask != null) {
       clearTimeout(turnoffTask);
     }
-    turnoffTask = setTimeout(actuator, data.delay || config['turnOffDelay'], {value: false});
+    turnoffTask = setTimeout(actuator, data.timeout || config['turnOffDelay'], {value: false});
   } else {
     // If turning off, cancel the outstanding turnoffTask
     if (turnoffTask != null) {
